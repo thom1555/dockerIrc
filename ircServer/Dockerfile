@@ -1,8 +1,12 @@
-FROM python:3.8-slim-buster
+FROM debian:latest
 
-WORKDIR /app
+WORKDIR /usr/app
 
-COPY . .
+COPY server.py server.py
+
+RUN apt update
+RUN apt upgrade -y
+RUN apt install python3 -y
 
 EXPOSE 5000
 CMD ["python3", "server.py"]

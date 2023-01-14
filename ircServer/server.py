@@ -1,33 +1,38 @@
 import socket
 
-# take the server name and port name
-#host = 'ircserver'
-hostname = socket.gethostname()
-host = socket.gethostbyname(hostname)
-port = 5000
 
-# create a socket at server side
-# using TCP / IP protocol
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def start_server():
+    """Start listening for client connections"""
+    #host = 'ircserver'
+    hostname = socket.gethostname()
+    host = socket.gethostbyname(hostname)
+    port = 5000
 
-# bind the socket with server
-# and port number
-s.bind(('', port))
+    # Create a listening socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.bind(('', port))
+    s.listen(1)
 
-# allow maximum 1 connection to
-# the socket
-s.listen(1)
+    while True:
+        # Accept connection
+        c, addr = s.accept()
+        print("CONNECTION FROM:", str(addr))
 
-while True:
-    c, addr = s.accept()
-    print("CONNECTION FROM:", str(addr))
+        # Send message
+        c.send(b"Hello, there! :)")
 
-    # send message
-    c.send(b"Hello, there! :)")
+        msg = "Bye.............."
+        c.send(msg.encode())
+        print("Stopping connection")
 
-    msg = "Bye.............."
-    c.send(msg.encode())
-    print("Stopping connection")
+        # Disconnect the server
+        c.close()
 
-    # disconnect the server
-    c.close()
+def server():
+    print("Quien eres")
+    answer = input("Enter your name: ")
+    print("Hello, " + answer)
+
+
+if __name__ == "__main__":
+    start_server()
